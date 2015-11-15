@@ -129,19 +129,34 @@ public class PlayScreen implements Screen{
 
     }
 
-    public void handleInput(float dt){
-        //control our player using immediate impulses
-        if(player.currentState != Mario.State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
-                player.jump();
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
-                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-                player.fire();
-        }
+//    public void handleInput(float dt){
+//        //control our player using immediate impulses
+//        if(player.currentState != Mario.State.DEAD) {
+//            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+//                player.jump();
+//            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+//                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+//            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+//                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+//            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+//                player.fire();
+//        }
+//
+//    }
 
+    public void handleInput(float deltaTime) {
+        if (player.currentState != Mario.State.DEAD) {
+            if (player.b2body.getLinearVelocity().x <= 2f && player.b2body.getLinearVelocity().x >= -2f) {
+                if(Gdx.input.getAccelerometerY() > 2f){
+                    player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+                }else if (Gdx.input.getAccelerometerY() < -2f){
+                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+                }
+            }
+            if (Gdx.input.justTouched()) {
+                player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+            }
+        }
     }
 
     public void update(float dt){
